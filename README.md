@@ -2,6 +2,7 @@
 
 This is a simple and classic Todo List API server built with Golang that connects to a Frontend page. As part of this exercise, I decided to use MySQL + Docker to handle the backend and React for frontend.
 
+
 ## Prerequisites
 
 - Golang & Docker installed in your system
@@ -13,6 +14,7 @@ This is a simple and classic Todo List API server built with Golang that connect
 - GORM as ORM for interacting with our DB
 - Request router using gorilla/mux
 - Logrus for logging
+- HTML, CSS and JavaScript for Frontend (Simplicity!)
 
 ## API Server Specs
 - It listens to port ```8000``` on localhost
