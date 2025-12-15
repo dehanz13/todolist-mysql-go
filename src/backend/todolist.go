@@ -7,6 +7,8 @@ import (
 
 	"encoding/json"
 
+	"github.com/rs/cors"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -128,5 +130,11 @@ func main() {
 	router.HandleFunc("/todo-incomplete", GetIncompleteItems).Methods("GET")
 	router.HandleFunc("/todo/{id}", UpdateItem).Methods("POST")
 	router.HandleFunc("/todo/{id}", DeleteItem).Methods("DELETE")
-	http.ListenAndServe(":8000", router)
+	// http.ListenAndServe(":8000", router)
+
+	handler := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "DELETE", "PATCH", "OPTIONS"},
+	}).Handler(router)
+
+	http.ListenAndServe(":8000", handler)
 }

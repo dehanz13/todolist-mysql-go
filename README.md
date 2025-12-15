@@ -1,6 +1,6 @@
-# Todo List API server + React Frontend
+# Full-Stack Todo List App: API server + JavaScript Frontend
 
-This is a simple and classic Todo List API server built with Golang that connects to a Frontend page. As part of this exercise, I decided to use MySQL + Docker to handle the backend and React for frontend.
+This is a simple and classic Todo List app built to learn Golang. The API server is built using Go and it is hooked to a MySQL DB that is running in a Docker container. We have the Frontend page that is calling the API endpoints to perform CRUD operations while seamlessly updating the DB in real-time. 
 
 
 ## Prerequisites
@@ -26,11 +26,37 @@ This is a simple and classic Todo List API server built with Golang that connect
   5. ```updateItems```
   6. ```deleteItem```
 
+
 ## ORM Model
 Our TodoItem `struct` consists of:
+
 - Id: int - This is our _*primary_key*_
 - Description: string - This is what we will display in our Frontend UI
 - Completed: boolean - This is to determine if the todo item is completed or not
+
+
+## Connect with Frontend
+In order to connect the API server to the frontend page, we need to give the CORS headers to the response. CORS is a mechanism that allows restricted resources on a web page to be requested from another domain outside the domain from which the first resource was served.
+
+install the go cors package
+```bash
+$ go get -u github.com/rs/cors
+```
+> we’re wrapping CORS handler around our existing application.
+
+### Clone Frontend
+
+https://github.com/themaxsandelin/todo.git
+
+Open index.html page in your browser. There is nothing special in this simple JQuery page. I have modified the original code made by [themaxsandelin](https://github.com/themaxsandelin/todo) to execute AJAX requests when you click buttons in the page. Check `resources/js/main.js` file to see how the web frontend works.
+
+## Build the package
+Now we’re done with our coding. You can now compile your code.
+
+```bash
+$ go build  
+$ ./todolist-mysql-go
+```
 
 ---
 
