@@ -24,6 +24,12 @@ This is a simple and classic Todo List API server built with Golang that connect
   5. ```updateItems```
   6. ```deleteItem```
 
+## ORM Model
+Our TodoItem `struct` consists of:
+- Id: int - This is our _*primary_key*_
+- Description: string - This is what we will display in our Frontend UI
+- Completed: boolean - This is to determine if the todo item is completed or not
+
 ---
 
 ### Helpful Commands:
