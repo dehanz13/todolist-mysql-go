@@ -4,19 +4,31 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
+	"encoding/json"
+
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	log "github.com/sirupsen/logrus"
 )
 
-var db, _ := gorm.Open("mysql", "root:root@/todolist?charset=utf8&parseTime=True&loc=Local")
+var db, _ = gorm.Open("mysql", "root:root@/todolist?charset=utf8&parseTime=True&loc=Local")
+
+func CreateTodoItem(w http.ResponseWriter, r *http.Request) {
+	description := r.FormValue("description")
+	log.WithFields(log.Fields{"description": description}).Info("Add new TodoItem. Saving to database.")
+	todo := &TodoItemModel{Description: description, Completed: false}
+	db.Create(&todo)
+	result := db.Last(&todo)
+	w.Header().Set("Content-type", "application/json")
+	json.NewEncoder(w).Encode(result.Value)
+}
 
 type TodoItemModel struct {
-	Id int `gorm:"primary_key"`
+	Id          int `gorm:"primary_key"`
 	Description string
-	Completed bool
+	Completed   bool
 }
 
 func Healthz(w http.ResponseWriter, r *http.Request) {
@@ -35,9 +47,9 @@ func main() {
 	db.Debug().DropTableIfExists(&TodoItemModel{})
 	db.Debug().AutoMigrate(&TodoItemModel{})
 
-	
 	log.Info("Starting Todolist API server")
 	router := mux.NewRouter()
 	router.HandleFunc("/healthz", Healthz).Methods("GET")
+	router.HandleFunc("/todo", CreateTodoItem).Methods("POST")
 	http.ListenAndServe(":8000", router)
 }
